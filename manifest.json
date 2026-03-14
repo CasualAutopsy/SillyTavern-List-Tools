@@ -1,0 +1,11 @@
+{
+    "display_name": "List Tools",
+    "loading_order": 1,
+    "requires": [],
+    "optional": [],
+    "js": "index.js",
+    "author": "CasualAutopsy",
+    "version": "0.1.0",
+    "homePage": "https://github.com/CasualAutopsy/SillyTavern-List-Tools",
+    "auto_update": false
+}
