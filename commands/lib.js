@@ -8,7 +8,6 @@ import {
 } from '../../../../variables.js';
 
 
-
 /**
  * Parses a value string into its appropriate JavaScript type.
  * Attempts JSON parsing first, then numeric conversion, then boolean strings.
@@ -82,8 +81,10 @@ function getStorageScope(target, args) {
  * Supports scoped, local, global, or inline list targets.
  * @param {Object} args - Command arguments including flags like noParse, jsReturn
  * @param {Array} [target, ...items] - Target list identifier and items to push
+ * @param {boolean} [isShift=false] - If true, uses unshift instead of push (adds to beginning)
+ * @returns {number|string} - List length if jsReturn is true, otherwise JSON string of the list
  */
-async function listPushCMD(args, [target, ...items]) {
+async function listPushUnshiftCMD(args, [target, ...items], isShift = false) {
     // Parse items to appropriate types unless noParse flag is set
     if (!isTrueBoolean(args.noParse)) {
         items = items.map(item => parseValue(item));
@@ -92,13 +93,18 @@ async function listPushCMD(args, [target, ...items]) {
     // Determine storage scope and get list
     const { list, setList } = getStorageScope(target, args);
 
-    // Retrieve list, push items, persist changes
-    list.push(...items);
+    let listLength;
+    if (!isShift) {
+        listLength = list.push(...items);
+    } else {
+        listLength = list.unshift(...items);
+    }
+
     setList(list);
 
     // Return either the full list (default) or just the new length (jsReturn flag)
     return isTrueBoolean(args.jsReturn)
-        ? list.length
+        ? listLength
         : JSON.stringify(list);
 }
 
@@ -107,13 +113,19 @@ async function listPushCMD(args, [target, ...items]) {
  * Supports scoped, local, global, or inline list targets.
  * @param {Object} args - Command arguments including flags like swapReturn
  * @param {string} target - The list identifier (variable name or JSON string)
+ * @param {boolean} [isShift=false] - If true, removes from beginning (shift), otherwise from end (pop)
  * @returns {*} - Either the popped item or remaining list (based on swapReturn flag)
  */
-async function listPopCMD(args, target) {
+async function listPopShiftCMD(args, target, isShift = false) {
     // Determine storage scope and get list
     const { list, setList } = getStorageScope(target, args);
 
-    const popped = list.pop();
+    let popped;
+    if (!isShift) {
+        popped = list.pop();
+    } else {
+        popped = list.shift();
+    }
 
     // swapReturn flag determines what gets persisted and what gets returned
     // Default: persist remaining list, return popped item
@@ -127,7 +139,64 @@ async function listPopCMD(args, target) {
     }
 }
 
-export const list_callbacks = {
-    list_push: listPushCMD,
-    list_pop: listPopCMD,
+/**
+ * Handles the /list-splice slash command to replace/remove items from a list.
+ * Supports scoped, local, global, or inline list targets.
+ * @param {Object} args - Command arguments including flags like noParse, jsReturn, swapReturn
+ * @param {Array} [target, ...items] - Target list, items to insert
+ * @returns {*} - Deleted items or remaining list based on flags
+ */
+async function listSpliceCMD(args, [target, ...items]) {
+    // Parse items to appropriate types unless noParse flag is set
+    if (!isTrueBoolean(args.noParse)) {
+        items = items.map(item => parseValue(item));
+    }
+
+    // Determine storage scope and get list
+    const { list, setList } = getStorageScope(target, args);
+
+    const del_list = list.splice(args.start, args.del, ...items);
+
+    // Determine what to persist + return based on flag:
+    // Default: persist modified list, return modified list
+    // jsReturn: persist modified list, return deleted items
+    // swapReturn: persist deleted items, return modified list
+    if (!isTrueBoolean(args.jsReturn) && !isTrueBoolean(args.swapReturn)) {
+        setList(list);
+        return serializeForStorage(list);
+    } else if (isTrueBoolean(args.jsReturn) && !isTrueBoolean(args.swapReturn)) {
+        setList(list);
+        return serializeForStorage(del_list);
+    } else {
+        setList(del_list);
+        return serializeForStorage(list);
+    }
 }
+
+/**
+ * @param {Object} args - Command arguments including flags like swapReturn
+ * @param {string} target - The list identifier (variable name or JSON string)
+ * @param {boolean} [isReverse=false] - Reverse the list instead of sorting if true
+ * @returns {*} - The new sorted or reversed list
+ */
+async function listSortReverseCMD(args, target, isReverse = false) {
+    // Determine storage scope and get list
+    const { list, setList } = getStorageScope(target, args);
+
+    if (!isReverse) {
+        list.sort();
+    }
+    if (isTrueBoolean(args.reverse) || isReverse) {
+        list.reverse();
+    }
+
+    setList(list);
+    return serializeForStorage(list);
+}
+
+export const list_callbacks = {
+    list_push_unshift: listPushUnshiftCMD,
+    list_pop_shift: listPopShiftCMD,
+    list_splice: listSpliceCMD,
+    list_sort_reverse: listSortReverseCMD,
+};
