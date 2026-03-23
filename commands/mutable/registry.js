@@ -8,7 +8,7 @@ import  {list_callbacks} from './lib.js';
 
 
 
-export function registerSlashCommands() {
+export function registerMutableSlashCommands() {
     // PUSH / POP
 
     // Register list-push command

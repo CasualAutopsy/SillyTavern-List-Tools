@@ -4,7 +4,7 @@ import {
     SlashCommandNamedArgument
 } from '../../../../../slash-commands/SlashCommandArgument.js';
 
-import {SlashCommandEnumValue} from '../../../../../slash-commands/SlashCommandEnumValue.js';
+// import {SlashCommandEnumValue} from '../../../../../slash-commands/SlashCommandEnumValue.js';
 
 
 // const varType = [
