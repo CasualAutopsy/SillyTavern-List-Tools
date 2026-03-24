@@ -1,15 +1,10 @@
 import {getContext} from '../../../../../st-context.js';
 
-import {
-    slash_arg,
-    slash_named_arg
-} from '../../../../../slash-commands/slash_arg.js';
-
 
 const context = getContext();
 
-const slash_named_arg = context.slash_named_arg;
-const slash_arg = context.slash_arg;
+const slash_named_arg = context.SlashCommandNamedArgument;
+const slash_arg = context.SlashCommandArgument;
 
 const arg_types = context.ARGUMENT_TYPE;
 
