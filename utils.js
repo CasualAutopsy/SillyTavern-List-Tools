@@ -213,6 +213,7 @@ export function macroMutate(value, resolve, shorthand) {
         ? 'setvar'
         : 'setglobalvar';
 
+    value = typeof value == 'object' ? JSON.stringify(value) : String(value);
     resolve(`{{${varMacro}::${varName}::${value}}}`);
 }
 
