@@ -1,9 +1,9 @@
 const isTrueBoolean = (await import(/* webpackIgnore: true */ '/scripts/utils.js')).isTrueBoolean;
 
-import {isMutableVarCheck, parseValue} from '../../../../utils.js';
+import {isMutableVarCheck, parseOrVar} from '../../../../utils.js';
 
 /**
- * Handles the /list-push slash command to add items the end of a list.
+ * Handles the /list-push slash command for adding items the end of a list.
  *
  * @param {Object} args - Slash command arguments.
  * @param target - Target list / variable.
@@ -13,13 +13,15 @@ import {isMutableVarCheck, parseValue} from '../../../../utils.js';
 export async function listPushCMD(args, [target, ...items]) {
     // Keep SillyTavern values 'as-is' if noParse flag is set, otherwise parse values
     items = !isTrueBoolean(args.noParse)
-        ? items.map(item => parseValue(item))
+        ? items.map((item) => {
+            return parseOrVar(item, args);
+        })
         : items;
 
     // Determine if variable and which type of variable to target
     const { list, setList } = isMutableVarCheck(target, args);
 
-    const listLength = list.push(...items);
+    const listLength = list.push(...items)
 
     setList(list); // Mutate variable and return appropriate value down the pipe
     return isTrueBoolean(args.jsReturn)
@@ -38,7 +40,9 @@ export async function listPushCMD(args, [target, ...items]) {
 export async function listUnshiftCMD(args, [target, ...items]) {
     // Keep SillyTavern values 'as-is' if noParse flag is set, otherwise parse values
     items = !isTrueBoolean(args.noParse)
-        ? items.map(item => parseValue(item))
+        ? items.map((item) => {
+            return parseOrVar(item, args);
+        })
         : items;
 
     // Determine if variable and which type of variable to target
@@ -103,7 +107,9 @@ export async function listShiftCMD(args, target) {
 export async function listSpliceCMD(args, [target, ...items]) {
     // Keep SillyTavern values 'as-is' if noParse flag is set, otherwise parse values
     items = !isTrueBoolean(args.noParse)
-        ? items.map(item => parseValue(item))
+        ? items.map((item) => {
+            return parseOrVar(item, args);
+        })
         : items;
 
     // Determine if variable and which type of variable to target
@@ -168,7 +174,7 @@ export async function listReverseCMD(args, target) {
 export async function listFillCMD(args, [target, item]) {
     // Keep SillyTavern values 'as-is' if noParse flag is set, otherwise parse values
     item = !isTrueBoolean(args.noParse)
-        ? parseValue(item)
+        ? parseOrVar(item, args)
         : item;
 
     // Determine if variable and which type of variable to target

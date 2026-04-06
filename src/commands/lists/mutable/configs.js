@@ -1,16 +1,16 @@
-const context = (await import(/* webpackIgnore: true */ '/scripts/st-context.js')).getContext();
+const context = (await import(/* webpackIgnore: true */ '/scripts/st-context.js')).getContext()
 
-const slash_named_arg = context.SlashCommandNamedArgument;
-const slash_arg = context.SlashCommandArgument;
+    , slash_named_arg = context.SlashCommandNamedArgument
+    , slash_arg = context.SlashCommandArgument;
 
-const arg_types = context.ARGUMENT_TYPE;
+const arg_types = context.ARGUMENT_TYPE
 
-const string_type = arg_types.STRING;
-const number_type = arg_types.NUMBER;
-const boolean_type = arg_types.BOOLEAN;
-const list_type = arg_types.LIST;
-const dict_type = arg_types.DICTIONARY;
-const var_type = arg_types.VARIABLE_NAME;
+    , string_type = arg_types.STRING
+    , number_type = arg_types.NUMBER
+    , boolean_type = arg_types.BOOLEAN
+    , list_type = arg_types.LIST
+    , dict_type = arg_types.DICTIONARY
+    , var_type = arg_types.VARIABLE_NAME;
 
 
 

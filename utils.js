@@ -74,7 +74,7 @@ function getGlobalVar(varName) {
 function getMutableScopeVar(varName, args) {
     if (args._scope.existsVariable(varName)) {
         try { // Attempt to parse the variable as JSON and create a mutation function
-            const get = () => args._scope.getVariable(varName);
+            const get = () => JSON.parse(args._scope.getVariable(varName));
             const set = (list) => args._scope.setVariable(varName, JSON.stringify(list));
             return { list: get(), setList: set };
         } catch { // If it fails, throw an error
@@ -217,34 +217,6 @@ export function macroMutate(value, resolve, shorthand) {
     resolve(`{{${varMacro}::${varName}::${value}}}`);
 }
 
-export function getStorageType(target, args) {
-    // Scoped variable: parse on read, stringify on write
-    if (args._scope.existsVariable(target)) {
-        const get = () => JSON.parse(args._scope.getVariable(target));
-        const set = (list) => args._scope.setVariable(target, JSON.stringify(list));
-        return { list: get(), setList: set };
-    }
-
-    // Local variable storage
-    if (getLocalVariable(target) !== '') {
-        const get = () => JSON.parse(getLocalVariable(target));
-        const set = (list) => setLocalVariable(target, JSON.stringify(list));
-        return { list: get(), setList: set };
-    }
-
-    // Global variable storage
-    if (getGlobalVariable(target) !== '') {
-        const get = () => JSON.parse(getGlobalVariable(target));
-        const set = (list) => setGlobalVariable(target, JSON.stringify(list));
-        return { list: get(), setList: set };
-    }
-
-    // Inline list: parse target as JSON, no persistence
-    const get = () => JSON.parse(target);
-    const set = () => {};
-    return { list: get(), setList: set };
-}
-
 /**
  * Parses a value string into its appropriate JavaScript type.
  * Attempts JSON parsing first, then numeric conversion, then boolean strings.
@@ -267,5 +239,47 @@ export function parseValue(value) {
         }
         // Return as string if no other conversion succeeds
         return value;
+    }
+}
+
+function scopeParse(varName, args) {
+    if (args._scope.existsVariable(varName)) {
+        return parseValue(args._scope.getVariable(varName));
+    } else {
+        throw new TypeError('No such variable: ' + varName + '(Scope)');
+    }
+}
+
+function localParse(varName) {
+    const value = getLocalVariable(varName);
+
+    if (value !== '') {
+        return parseValue(value)
+    } else {
+        throw new TypeError('No such variable: ' + varName + '(Local)');
+    }
+}
+
+function globalParse(varName) {
+    const value = getGlobalVariable(varName);
+
+    if (value !== '') {
+        return parseValue(value)
+    } else {
+        throw new TypeError('No such variable: ' + varName + '(Global)');
+    }
+}
+
+export function parseOrVar(target, args) {
+    const [, prefix, varName] = target.match(/^([.$])?([-_a-zA-Z]+)$/);
+
+    if (!varName) {
+        return parseValue(target);
+    } else if (!prefix) {
+        return scopeParse(varName, args);
+    } else {
+        return prefix === '.'
+            ? localParse(varName)
+            : globalParse(varName);
     }
 }

@@ -15,16 +15,22 @@ import {
     LIST_FILL_CONFIG, LIST_COPYWITHIN_CONFIG
 } from './configs.js';
 
-import {list_docs} from "./docs.js";
+import {
+    LIST_POP_HELP, LIST_SHIFT_HELP,
+    LIST_PUSH_HELP, LIST_UNSHIFT_HELP,
+    LIST_SPLICE_HELP,
+    LIST_SORT_HELP, LIST_REVERSE_HELP,
+    LIST_FILL_HELP, LIST_COPYWITHIN_HELP
+} from './docs.js';
 
 /**
  * Register all mutable slash commands.
  */
 export async function registerMutableSlashCommands() {
-    const context = (await import(/* webpackIgnore: true */ '/scripts/st-context.js')).getContext();
+    const context = (await import(/* webpackIgnore: true */ '/scripts/st-context.js')).getContext()
 
-    const slash_parser = context.SlashCommandParser;
-    const slash_command = context.SlashCommand;
+        , slash_parser = context.SlashCommandParser
+        , slash_command = context.SlashCommand;
 
     // PUSH / POP
 
@@ -32,14 +38,14 @@ export async function registerMutableSlashCommands() {
     slash_parser.addCommandObject(slash_command.fromProps({
         callback: listPushCMD,
         ...LIST_PUSH_CONFIG,
-        helpString: list_docs.list_push,
+        helpString: LIST_PUSH_HELP,
     }));
 
     // Register '/list-pop' command
     slash_parser.addCommandObject(slash_command.fromProps({
         callback: listPopCMD,
         ...LIST_POP_CONFIG,
-        helpString: list_docs.list_pop,
+        helpString: LIST_POP_HELP,
     }));
 
     // SHIFT / UNSHIFT
@@ -48,14 +54,14 @@ export async function registerMutableSlashCommands() {
     slash_parser.addCommandObject(slash_command.fromProps({
         callback: listUnshiftCMD,
         ...LIST_UNSHIFT_CONFIG,
-        helpString: list_docs.list_unshift,
+        helpString: LIST_UNSHIFT_HELP,
     }));
 
     // Register '/list-shift' command
     slash_parser.addCommandObject(slash_command.fromProps({
         callback: listShiftCMD,
         ...LIST_SHIFT_CONFIG,
-        helpString: list_docs.list_shift,
+        helpString: LIST_SHIFT_HELP,
     }));
 
     // SPLICE
@@ -64,7 +70,7 @@ export async function registerMutableSlashCommands() {
     slash_parser.addCommandObject(slash_command.fromProps({
         callback: listSpliceCMD,
         ...LIST_SPLICE_CONFIG,
-        helpString: list_docs.list_splice,
+        helpString: LIST_SPLICE_HELP,
     }));
 
     // SORT / REVERSE
@@ -73,14 +79,14 @@ export async function registerMutableSlashCommands() {
     slash_parser.addCommandObject(slash_command.fromProps({
         callback: listSortCMD,
         ...LIST_SORT_CONFIG,
-        helpString: list_docs.list_sort,
+        helpString: LIST_SORT_HELP,
     }));
 
     // Register '/list-reverse' command
     slash_parser.addCommandObject(slash_command.fromProps({
         callback: listReverseCMD,
         ...LIST_REVERSE_CONFIG,
-        helpString: list_docs.list_reverse,
+        helpString: LIST_REVERSE_HELP,
     }));
 
     // FILL / COPYWITHIN
@@ -89,13 +95,13 @@ export async function registerMutableSlashCommands() {
     slash_parser.addCommandObject(slash_command.fromProps({
         callback: listFillCMD,
         ...LIST_FILL_CONFIG,
-        helpString: list_docs.list_fill,
+        helpString: LIST_FILL_HELP,
     }));
 
     // Register '/list-copywithin' command
     slash_parser.addCommandObject(slash_command.fromProps({
         callback: listCopyWithinCMD,
         ...LIST_COPYWITHIN_CONFIG,
-        helpString: list_docs.list_copywithin,
+        helpString: LIST_COPYWITHIN_HELP,
     }));
 }

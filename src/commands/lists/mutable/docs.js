@@ -3,7 +3,7 @@
 /**
  * Help text for list-push command with examples.
  */
-const LIST_PUSH_HELP = /*html*/`
+export const LIST_PUSH_HELP = /*html*/`
 <div>
     Pushes one or more values to the end of a list.
     <br/>If a variable is passed as a target list, then the variable will automatically be updated.
@@ -48,7 +48,7 @@ const LIST_PUSH_HELP = /*html*/`
 /**
  * Help text for list-pop command with examples.
  */
-const LIST_POP_HELP = /*html*/`
+export const LIST_POP_HELP = /*html*/`
 <div>
     Pops a value from the end of a list.
     <br/>If a variable is passed as a target list, then the variable will automatically be updated.
@@ -85,7 +85,7 @@ const LIST_POP_HELP = /*html*/`
 /**
  * Help text for list-unshift command with examples.
  */
-const LIST_UNSHIFT_HELP = /*html*/`
+export const LIST_UNSHIFT_HELP = /*html*/`
 <div>
     Unshifts one or more values to the beginning of a list.
     <br/>If a variable is passed as a target list, then the variable will automatically be updated.
@@ -132,7 +132,7 @@ const LIST_UNSHIFT_HELP = /*html*/`
 /**
  * Help text for list-shift command with examples.
  */
-const LIST_SHIFT_HELP = /*html*/`
+export const LIST_SHIFT_HELP = /*html*/`
 <div>
     Shifts a value from the beginning of a list.
     <br/>If a variable is passed as a target list, then the variable will automatically be updated.
@@ -171,7 +171,7 @@ const LIST_SHIFT_HELP = /*html*/`
 /**
  * Help text for list-splice command with examples.
  */
-const LIST_SPLICE_HELP = /*html*/`
+export const LIST_SPLICE_HELP = /*html*/`
 <div>
     Add, remove, or replace values from anywhere in a list.
     <br/>If a variable is passed as a target list, then the variable will automatically be updated.
@@ -228,7 +228,7 @@ const LIST_SPLICE_HELP = /*html*/`
 /**
  * Help text for list-sort command with examples.
  */
-const LIST_SORT_HELP = /*html*/`
+export const LIST_SORT_HELP = /*html*/`
 <div>
     Sort all the values of a list.
     <br/>If a variable is passed as a target list, then the variable will automatically be updated.
@@ -269,7 +269,7 @@ const LIST_SORT_HELP = /*html*/`
 /**
  * Help text for list-reverse command with examples.
  */
-const LIST_REVERSE_HELP = /*html*/`
+export const LIST_REVERSE_HELP = /*html*/`
 <div>
     reverse all the values of a list.
     <br/>If a variable is passed as a target list, then the variable will automatically be updated.
@@ -306,7 +306,7 @@ const LIST_REVERSE_HELP = /*html*/`
 /**
  * Help text for list-fill command with examples.
  */
-const LIST_FILL_HELP = /*html*/`
+export const LIST_FILL_HELP = /*html*/`
 <div>
     Fill a list with a single value.
     <br/>If a variable is passed as a target list, then the variable will will automatically be updated.
@@ -333,7 +333,7 @@ const LIST_FILL_HELP = /*html*/`
 </div>
 `;
 
-const LIST_COPYWITHIN_HELP = /*html*/`
+export const LIST_COPYWITHIN_HELP = /*html*/`
 <div>
     Copy a section of a list to another location within the list.
     <br/>If a variable is passed as a target list, then the variable will automatically be updated.
@@ -355,15 +355,3 @@ const LIST_COPYWITHIN_HELP = /*html*/`
     </ul>
 </div>
 `;
-
-export const list_docs = {
-    list_push: LIST_PUSH_HELP,
-    list_pop: LIST_POP_HELP,
-    list_unshift: LIST_UNSHIFT_HELP,
-    list_shift: LIST_SHIFT_HELP,
-    list_splice: LIST_SPLICE_HELP,
-    list_sort: LIST_SORT_HELP,
-    list_reverse: LIST_REVERSE_HELP,
-    list_fill: LIST_FILL_HELP,
-    list_copywithin: LIST_COPYWITHIN_HELP,
-};
