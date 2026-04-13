@@ -1,4 +1,5 @@
-const isTrueBoolean = (await import(/* webpackIgnore: true */ '/scripts/utils.js')).isTrueBoolean;
+const {isTrueBoolean}
+    = await import(/* webpackIgnore: true */ '/scripts/utils.js');
 
 const {
     parseValueOrVar,
