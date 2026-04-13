@@ -5,6 +5,9 @@ import {LIST_ZIP_CONFIG, LIST_ZIP_OBJECT_CONFIG} from './configs.js';
 import {LIST_ZIP_HELP, LIST_ZIP_OBJECT_HELP} from './docs.js';
 
 
+/**
+ * Register all zip list slash commands.
+ */
 export async function registerZipSlashCommands() {
     const context = (await import(/* webpackIgnore: true */ '/scripts/st-context.js')).getContext()
 

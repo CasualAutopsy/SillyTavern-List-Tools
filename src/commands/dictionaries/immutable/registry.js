@@ -15,6 +15,7 @@ export async function registerImmutableDictSlashCommands() {
 
     // register '/dict-at' command
     slash_parser.addCommandObject(slash_command.fromProps({
+        // @ts-ignore
         callback: dictAtCMD,
         ...DICT_AT_CONFIG,
         helpString: DICT_AT_HELP,
@@ -22,6 +23,7 @@ export async function registerImmutableDictSlashCommands() {
 
     // register '/dict-get' command
     slash_parser.addCommandObject(slash_command.fromProps({
+        // @ts-ignore
         callback: dictGetCMD,
         ...DICT_GET_CONFIG,
         helpString: DICT_GET_HELP,

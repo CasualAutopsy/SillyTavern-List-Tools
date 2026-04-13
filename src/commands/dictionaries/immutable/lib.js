@@ -11,15 +11,14 @@ const {
  * Handles the '/dict-at' slash command for retrieving multiple values from a dictionary.
  *
  * @param {Object} args - Slash command arguments.
- * @param {string} target - Target dictionary / variable.
- * @param {string[]} paths - The property paths to retrieve from.
- * @returns {Array} - The values at the specified paths.
+ * @param {[String, String[]]} target - Target dictionary / variable.
+ * @returns {Promise<String>} - The values at the specified paths.
  */
 export async function dictAtCMD(args, [target, ...paths]) {
     return JSON.stringify(
         at(
             parseJSONOrVar(target, args),
-            parseValue(paths)
+            paths
         )
     );
 }
@@ -28,15 +27,16 @@ export async function dictAtCMD(args, [target, ...paths]) {
  * Handles the '/dict-get' slash command for retrieving a single value from a dictionary.
  *
  * @param {Object} args - Slash command arguments.
- * @param {string} target - Target dictionary / variable.
- * @param {string} path - The property path to retrieve from.
- * @returns {*} - The value at the specified path.
+ * @param {[String, String]} target - Target dictionary / variable.
+ * @returns {Promise<*>} - The value at the specified path.
  */
 export async function dictGetCMD(args, [target, path]) {
     const retrieval = get(
         parseJSONOrVar(target, args),
         parseValue(path),
+        // @ts-ignore
         args.default
+            // @ts-ignore
             ? parseValueOrVar(args.default, args)
             : undefined
     );

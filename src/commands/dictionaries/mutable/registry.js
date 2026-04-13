@@ -11,6 +11,7 @@ export async function registerMutableDictSlashCommands() {
         , slash_command = context.SlashCommand;
 
     slash_parser.addCommandObject(slash_command.fromProps({
+        // @ts-ignore
         callback: dictAssignCMD,
         ...DICT_ASSIGN_CONFIG,
         helpString: DICT_ASSIGN_HELP,

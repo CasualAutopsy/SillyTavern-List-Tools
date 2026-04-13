@@ -9,9 +9,8 @@ const {
  * Handles the '/dict-assign' slash command for assigning properties to a dictionary mutably.
  *
  * @param {Object} args - Slash command arguments.
- * @param {Object|string} target - Target dictionary or a variable containing a dictionary.
- * @param {Object|string} sources - Sources containing properties to assign to the target dictionary.
- * @returns {string<Object>} - The modified dictionary.
+ * @param {[String, String[]]} target - Target dictionary or a variable containing a dictionary.
+ * @returns {Promise<String>} - The modified dictionary.
  */
 export async function dictAssignCMD(args, [target, ...sources]) {
     const {list, setList} = mutableParseValueOrVar(target, args);
