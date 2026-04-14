@@ -1,35 +1,40 @@
 import {sample, sampleSize, shuffle} from 'lodash-es';
 import {parseInt} from 'lodash-es';
 
-const {
-    parseJSONOrVar
-} = await import(/* webpackIgnore: true */ '/scripts/extensions/third-party/STLibs-Nox-Library/scripts/parsing.js');
+const {parseJSONOrVar}
+    = await import(/* webpackIgnore: true */ '/scripts/extensions/third-party/STLibs-Nox-Library/scripts/parsing.js');
 
 /**
  * Handles the '/collection-sample' command for sampling a random value from a collection.
  *
  * @param {Object} args - Slash command arguments.
- * @param {string} target - Target collection / variable.
- * @returns {*} - Sampled value.
- */
+ * @param {String} target - Target collection / variable.
+ * @returns {Promise<*>} - Sampled value.
+ *///? Maybe combine with SampleSize?
 export async function collectionSampleCMD(args, target) {
-    return JSON.stringify(sample(
+    const sampledValue = sample(
         parseJSONOrVar(target, args)
-    ));
+    );
+
+    return typeof sampledValue == 'object'
+        ? JSON.stringify(sampledValue)
+        : sampledValue;
 }
 
 /**
  * Handles the '/collection-sample-size' command for randomly sampling n number of values from a collection.
  *
  * @param {Object} args - Slash command arguments.
- * @param {string} target - Target collection / variable.
- * @param {string} n - Number of samples to return.
- * @returns {Array} - Array of sampled values.
+ * @param {[String, String]} unnamedArgs - Target collection / variable + number of values to sample.
+ * @returns {Promise<String>} - Array of sampled values.
  */
 export async function collectionSampleSizeCMD(args, [target, n]) {
-    return JSON.stringify(sampleSize(
-        parseJSONOrVar(target, args),
-        parseInt(n)
+    return JSON.stringify(
+        // @ts-ignore
+        sampleSize(
+            parseJSONOrVar(target, args),
+            // @ts-ignore
+            parseInt(n),
     ));
 }
 
@@ -37,8 +42,8 @@ export async function collectionSampleSizeCMD(args, [target, n]) {
  * Handles the '/collection-shuffle' command for shuffling a collection.
  *
  * @param {Object} args - Slash command arguments.
- * @param {string} target - Target collection / variable.
- * @returns {Array} - Array of shuffled values.
+ * @param {String} target - Target collection / variable.
+ * @returns {Promise<String>} - Array of shuffled values.
  */
 export async function collectionShuffleCMD(args, target) {
     return JSON.stringify(shuffle(
